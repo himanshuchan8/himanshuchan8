@@ -3,7 +3,7 @@
 </p>
 
 <p align="center">
-  <img src="https://tenor.com/view/luffy-gif-521970511207411999" width="900" height="350"/>
+  <img src="[https://tenor.com/view/luffy-gif-521970511207411999](https://cdn.discordapp.com/attachments/1346545437586358353/1545120887387332709/one_piece_anime_addict_GIF.gif?ex=6a9afd76&is=6a99abf6&hm=dd3d714a631ced12f2fd789acd2814cdaeb69be7199de00f9fe46a70bd194d09&)" width="900" height="350"/>
 </p>
 <p align="center">
   <code>myrachane@dev:~$ initializing session...</code>
