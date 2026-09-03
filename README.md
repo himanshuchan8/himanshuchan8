@@ -1,41 +1,53 @@
-<p align="center">
-  <img src="https://raw.githubusercontent.com/emtypyie/emtypyie/output/pacman-contribution-graph-dark.svg" />
-</p>
+name: pakuman
+on:
+  schedule: # Run automatically every 24 hours
+    - cron: '0 0 * * *'
+  workflow_dispatch: # Allows manual triggering
+  push: # Runs on every push to the main branch
+    branches:
+      - main
+jobs:
+  generate:
+    permissions:
+      contents: write
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: checkout repo (for the overlay script)
+        uses: actions/checkout@v4
 
-<p align="center">
-  <img src="[https://tenor.com/view/luffy-gif-521970511207411999](https://cdn.discordapp.com/attachments/1346545437586358353/1545120887387332709/one_piece_anime_addict_GIF.gif?ex=6a9afd76&is=6a99abf6&hm=dd3d714a631ced12f2fd789acd2814cdaeb69be7199de00f9fe46a70bd194d09&)" width="900" height="350"/>
-</p>
-<p align="center">
-  <code>myrachane@dev:~$ initializing session...</code>
-</p>
+      - name: generate contribution graph SVGs
+        uses: abozanona/pacman-contribution-graph@main
+        with:
+          github_user_name: ${{ github.repository_owner }}
+          # Comma-separated list of game names to generate. Default: pacman
+          games: 'pacman'
+          # Optional: omit the month labels row above the grid. Default: false
+          hide_month_labels: 'false'
 
-<p align="center">
-  <img src="https://komarev.com/ghpvc/?username=emtypyie&label=Profile%20views&color=00FF9F&style=flat-square" alt="profile views" />
-  <img src="https://img.shields.io/badge/OS-Arch%20Linux-1793D1?style=flat-square&logo=arch-linux&logoColor=white" />
-  <img src="https://img.shields.io/badge/status-building%20cool%20stuff-00FF9F?style=flat-square" />
-</p>
+      - name: set up python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
 
-<p align="center">
-  <a href="https://emtypyie.in">
-    <img src="https://img.shields.io/badge/website-emtypyie.in-7c3aed?style=for-the-badge&logo=firefox&logoColor=white" />
-  </a>
-  <a href="https://wiki.emtypyie.in">
-    <img src="https://img.shields.io/badge/wiki-wiki.emtypyie.in-a78bfa?style=for-the-badge&logo=bookstack&logoColor=white" />
-  </a>
-</p>
+      - name: inject blinking GAME OVER overlay into generated SVGs
+        run: |
+          for f in dist/*.svg; do
+            echo "Processing $f"
+            python3 scripts/add_game_over.py "$f"
+          done
 
-<br>
+      # Push the generated SVGs to the output branch
+      - name: push SVGs to the output branch
+        uses: crazy-max/ghaction-github-pages@v3.1.0
+        with:
+          target_branch: output
+          build_dir: dist
+          keep_files: true # stops this from wiping out snake's files
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-
-
-<p align="center">
-  <img src="https://streak-stats.demolab.com/?user=emtypyie&theme=tokyonight&hide_border=false" />
-</p>
-
-
-
-<br>
-
-<p align="center">
-  <sub>I use Arch btw.</sub>
-</p>
+      - name: print output svg links
+        run: |
+          echo "Pacman: https://raw.githubusercontent.com/${{ github.repository }}/output/pacman-contribution-graph.svg"
+          echo "Pacman (dark): https://raw.githubusercontent.com/${{ github.repository }}/output/pacman-contribution-graph-dark.svg"
