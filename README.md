@@ -3,7 +3,7 @@
 </p>
 
 <p align="center">
-  <img src="[https://cdn.emtypyie.in/assets/yuri.gif](https://tenor.com/view/luffy-gif-521970511207411999)" width="900" height="350"/>
+  <img src="https://tenor.com/view/luffy-gif-521970511207411999" width="4980" height="280"/>
 </p>
 <p align="center">
   <code>myrachane@dev:~$ initializing session...</code>
